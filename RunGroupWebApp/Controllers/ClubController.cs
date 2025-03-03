@@ -8,12 +8,12 @@ namespace RunGroupWebApp.Controllers
 {
     public class ClubController : Controller
     {
-		private readonly IClubRepository _clubRepository;
+        private readonly IClubRepository _clubRepository;
 
-		public ClubController(IClubRepository clubRepository)
+        public ClubController(IClubRepository clubRepository)
         {
-			_clubRepository = clubRepository;
-		}
+            _clubRepository = clubRepository;
+        }
         public async Task<IActionResult> Index()
         {
             IEnumerable<Club> clubs = await _clubRepository.GetAll();
@@ -24,6 +24,22 @@ namespace RunGroupWebApp.Controllers
         {
             Club club = await _clubRepository.GetByIdAsync(id);
             return View(club);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Club club)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(club);
+            }
+            _clubRepository.Add(club);
+            return RedirectToAction("Index");
         }
     }
 }
