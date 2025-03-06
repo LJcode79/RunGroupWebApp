@@ -77,13 +77,23 @@ namespace RunGroupWebApp.Controllers
             };
             var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 
+            if (!newUserResponse.Succeeded) // Check for errors
+            {
+                foreach (var error in newUserResponse.Errors)
+                {
+                    ModelState.AddModelError("Password", error.Description); // Add errors to ModelState
+                }
+                return View(registerViewModel); // Return view with errors
+            }
+
             if (newUserResponse.Succeeded)
                 await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+
+                await _signInManager.SignInAsync(newUser, isPersistent: false);
 
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
