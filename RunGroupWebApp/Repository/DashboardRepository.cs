@@ -1,4 +1,5 @@
-﻿using RunGroupWebApp.Data;
+﻿using Microsoft.Identity.Client;
+using RunGroupWebApp.Data;
 using RunGroupWebApp.Interfaces;
 using RunGroupWebApp.Models;
 
@@ -26,6 +27,10 @@ namespace RunGroupWebApp.Repository
             var curUser = _httpContextAccessor.HttpContext?.User.GetUserId();
             var userRaces = _context.Races.Where(r => r.AppUser.Id == curUser);
             return userRaces.ToList();
+        }
+        public async Task<AppUser> GetUserById(string id)
+        {
+            return await _context.Users.FindAsync(id);
         }
     }
 }
