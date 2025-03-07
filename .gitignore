@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+RunGroupWebApp/Migrations/20250307013745_Users.Designer.cs
+RunGroupWebApp/Migrations/20250307013745_Users.cs
+RunGroupWebApp/appsettings.json
+RunGroupWebApp/appsettings.json

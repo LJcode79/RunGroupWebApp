@@ -33,7 +33,31 @@ namespace RunGroupWebApp.Controllers
         {
             var curUserId = _httpContextAccessor.HttpContext.User.GetUserId();
             var user = await _dashboardRepository.GetUserById(curUserId);
-            return View();
+            if (user == null) return View("Error");
+            var editUserViewModel = new EditUserDashboardViewModel()
+            {
+                Id = curUserId,
+                Pace = user.Pace,
+                Mileage = user.Mileage,
+                ProfileImageUrl = user.ProfileImageUrl,
+                City = user.City,
+                State = user.State
+
+            };
+            return View(editUserViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUserProfile(EditUserDashboardViewModel editVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to edit profile");
+                return View("EditUserProfile", editVM);
+
+            }
+
+            var user = await _dashboardRepository.GetByIdNoTracking();
         }
     }
 }

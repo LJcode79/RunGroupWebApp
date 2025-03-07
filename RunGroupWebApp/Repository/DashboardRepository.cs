@@ -32,5 +32,11 @@ namespace RunGroupWebApp.Repository
         {
             return await _context.Users.FindAsync(id);
         }
-    }
+
+        public async Task<AppUser> GetByIdNoTracking(string id)
+        {
+
+        }
+
+	}
 }
